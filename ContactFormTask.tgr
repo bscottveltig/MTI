@@ -1,0 +1,46 @@
+trigger ContactFormTask on WebActivity__c (after update) {
+
+ list<Task> ContactFormTask = new list<Task>();
+   List<WebActivity__c> newWebActivity = new List<WebActivity__c>();
+    for(integer i=0; i<trigger.new.size(); i++) {
+    
+     
+             if ((Trigger.new[i].RecordTypeId == '0126000000016NG')&&(Trigger.new[i].Lead__c==null)) {
+                System.debug('triggerfire');
+                ContactFormtask.add(new Task(
+                                    
+                    whatid=Trigger.new[i].Id,
+                    OwnerId=Trigger.new[i].OwnerId,
+                    whoid=Trigger.new[i].Contact__c,
+                    Subject='Contact Form Submission Follow-Up',
+                    Priority='High',
+                    Status='Not Started',
+                    Type='Other',
+                    WebFormType__c='ContactForm',
+                    Division__c=Trigger.new[i].Division__c,
+                    ActivityDate=Trigger.new[i].ActivityDueDate__c,
+                    Description='A contact form has been submitted through the website. Please follow up accordingly.'));
+             } 
+             
+             if ((Trigger.new[i].RecordTypeId == '0126000000016NG')&&(Trigger.new[i].Contact__c==null)) {
+                System.debug('triggerfire');
+                ContactFormtask.add(new Task(
+                                    
+                    OwnerId=Trigger.new[i].OwnerId,
+                    whoid=Trigger.new[i].Lead__c,
+                    Subject='Contact Form Submission Follow-Up',
+                    Priority='High',
+                    Status='Not Started',
+                    Type='Other',
+                    WebFormType__c='ContactForm',
+                    Division__c=Trigger.new[i].Division__c,
+                    ActivityDate=Trigger.new[i].ActivityDueDate__c,
+                    Description='A contact form has been submitted through the website. Please follow up accordingly.'));
+             } 
+    
+insert ContactFormTask;
+
+   }
+}
+
+// written by Laura J. McKevitt 8.25.11

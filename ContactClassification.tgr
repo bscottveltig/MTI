@@ -1,0 +1,5 @@
+trigger ContactClassification on ContactClassification__c ( before insert )
+{
+    List<AccountClassification__c> relatedAccountClassifications = ContactClassificationServices.getRelatedAccountClassifications( trigger.new );
+    ContactClassificationServices.setAccountClassificationOnCC( relatedAccountClassifications, trigger.new );
+}
